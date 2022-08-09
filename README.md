@@ -3,7 +3,9 @@
 ## How to install
 
 Clone this repo and run
-    pip install .
+```
+pip install .
+```
 
 ## How to run 
 
