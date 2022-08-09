@@ -2,7 +2,7 @@
 
 ## How to install
 
-Clone this repo and run
+First, install [odslatex](https://github.com/javierelpianista/odslatex). Then, clone this repo and run
 ```
 pip install .
 ```
