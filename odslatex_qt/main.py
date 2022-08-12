@@ -24,6 +24,7 @@ from PyQt5 import uic
 
 from odslatex.main import convert_table, beautify_body, list_tables
 import sys
+import zipfile
 
 if sys.version_info < (3,9):
     import importlib_resources
@@ -80,7 +81,15 @@ class MyWindowClass(QMainWindow, form_class):
         print('help')
 
     def show_file(self, fileName):
-        table_names = list_tables(filename=fileName, return_list=True)
+        try: 
+            table_names = list_tables(filename=fileName, return_list=True)
+        except zipfile.BadZipFile:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText('The selected file does not appear to be a LibreOffice Calc file.')
+            msg.setWindowTitle('Error!')
+            msg.exec_()
+            return
         
         for n, name in enumerate(table_names):
             self.textEdits.append(ModQTextEdit())
@@ -89,6 +98,7 @@ class MyWindowClass(QMainWindow, form_class):
                     '{:2d}: {}'.format(n, name)
                     )
             text = convert_table( filename = fileName, which = n)
+
             text = beautify_body(text)
             self.textEdits[n].setText(text)
         
